@@ -1,0 +1,155 @@
+#! /bin/bash
+
+echo
+echo
+#goto run
+
+head() {
+    echo "Tic-Tac-Toe (TiTaTo)"
+    echo "--------------------"
+    echo "u2r3 by Brendon, 01/23/2019."
+    echo
+    echo
+}
+
+help() {
+    echo "Help is unavailable for this script."
+    echo
+    echo "This script is interactive."
+}
+
+end() {
+    echo
+    echo
+    echo "-------------"
+    echo "End of TiTaTo"
+}
+
+turn() {
+    TTT_temp[0]=$TTT_status
+
+    #:turnwhile
+    while [[ "${TTT_temp[0]}" == "$TTT_status" ]]; do
+        echo
+        echo
+        echo "  ${TTT_cell[1]} ${TTT_cell[2]} ${TTT_cell[3]}"
+        echo "  ${TTT_cell[4]} ${TTT_cell[5]} ${TTT_cell[6]}"
+        echo "  ${TTT_cell[7]} ${TTT_cell[8]} ${TTT_cell[9]}"
+        echo
+        read -n 1 -p "<TiTaTo/?> Player $TTT_status, place your mark [1-9]: " edensh_inp
+        #set edendos_inp=!errorlevel!
+        if [[ $edensh_inp == 1 ]]; then TTT_temp[1]=${TTT_cell[1]}; fi
+        if [[ $edensh_inp == 2 ]]; then TTT_temp[1]=${TTT_cell[2]}; fi
+        if [[ $edensh_inp == 3 ]]; then TTT_temp[1]=${TTT_cell[3]}; fi
+        if [[ $edensh_inp == 4 ]]; then TTT_temp[1]=${TTT_cell[4]}; fi
+        if [[ $edensh_inp == 5 ]]; then TTT_temp[1]=${TTT_cell[5]}; fi
+        if [[ $edensh_inp == 6 ]]; then TTT_temp[1]=${TTT_cell[6]}; fi
+        if [[ $edensh_inp == 7 ]]; then TTT_temp[1]=${TTT_cell[7]}; fi
+        if [[ $edensh_inp == 8 ]]; then TTT_temp[1]=${TTT_cell[8]}; fi
+        if [[ $edensh_inp == 9 ]]; then TTT_temp[1]=${TTT_cell[9]}; fi
+
+        if ! [[ "${TTT_temp[1]}" == "NUL" ]]; then
+
+            if [[ "${TTT_temp[1]}" == "-" ]]; then
+                TTT_cell[$edensh_inp]=$TTT_status
+
+                if [[ "$TTT_status" == "O" ]]; then TTT_temp[0]=X; fi
+                if [[ "$TTT_status" == "X" ]]; then TTT_temp[0]=O; fi
+            else
+                echo ; echo "<TiTaTo/X> Cell already occupied!"
+            fi
+        else
+            echo
+            echo "<TiTaTo/X> Invalid input!"
+        fi
+        TTT_temp[1]=NUL
+        #goto turnwhile
+    done
+    TTT_status=${TTT_temp[0]}
+    (( TTT_inputs+=1 ))
+}
+
+check() {
+    TTT_temp[0]=$TTT_status
+    TTT_status=END
+
+    if [[ "${TTT_temp[0]}" == "O" ]]; then TTT_temp[1]=X; fi
+    if [[ "${TTT_temp[0]}" == "X" ]]; then TTT_temp[1]=O; fi
+    edensh_out="${TTT_temp[1]} wins!"
+
+    # cross
+    if [[ "${TTT_cell[5]}" == "${TTT_temp[1]}" ]]; then
+        if [[ "${TTT_cell[1]}${TTT_cell[5]}${TTT_cell[9]}" == "${TTT_temp[1]}${TTT_temp[1]}${TTT_temp[1]}" ]]; then return; fi
+        if [[ "${TTT_cell[3]}${TTT_cell[5]}${TTT_cell[7]}" == "${TTT_temp[1]}${TTT_temp[1]}${TTT_temp[1]}" ]]; then return; fi
+        if [[ "${TTT_cell[4]}${TTT_cell[5]}${TTT_cell[6]}" == "${TTT_temp[1]}${TTT_temp[1]}${TTT_temp[1]}" ]]; then return; fi
+        if [[ "${TTT_cell[2]}${TTT_cell[5]}${TTT_cell[8]}" == "${TTT_temp[1]}${TTT_temp[1]}${TTT_temp[1]}" ]]; then return; fi
+    fi
+    # borders
+    if [[ "${TTT_cell[1]}" == "${TTT_temp[1]}" ]]; then
+        if [[ "${TTT_cell[1]}${TTT_cell[2]}${TTT_cell[3]}" == "${TTT_temp[1]}${TTT_temp}[1]${TTT_temp[1]}" ]]; then return; fi
+        if [[ "${TTT_cell[1]}${TTT_cell[4]}${TTT_cell[7]}" == "${TTT_temp[1]}${TTT_temp}[1]${TTT_temp[1]}" ]]; then return; fi
+    fi
+    if [[ "${TTT_cell[9]}" == "${TTT_temp[1]}" ]]; then
+        if [[ "${TTT_cell[7]}${TTT_cell[8]}${TTT_cell[9]}" == "${TTT_temp[1]}${TTT_temp[1]}${TTT_temp[1]}" ]]; then return; fi
+        if [[ "${TTT_cell[3]}${TTT_cell[6]}${TTT_cell[9]}" == "${TTT_temp[1]}${TTT_temp[1]}${TTT_temp[1]}" ]]; then return; fi
+    fi
+    if (( $TTT_inputs >= 9 )); then
+        edensh_out=Draw
+        return
+    fi
+    TTT_status=${TTT_temp[0]}
+}
+
+game() {
+    while ! [[ "$TTT_status" == "END" ]]; do
+        turn
+        check
+        #goto game
+    done
+    echo
+    echo
+    echo "  ${TTT_cell[1]} ${TTT_cell[2]} ${TTT_cell[3]}"
+    echo "  ${TTT_cell[4]} ${TTT_cell[5]} ${TTT_cell[6]}"
+    echo "  ${TTT_cell[7]} ${TTT_cell[8]} ${TTT_cell[9]}"
+    echo
+    echo "<TiTaTo/!> $edensh_out"$'\a'
+    echo "Press any key to quit."
+    read -n 1
+    #endlocal
+    end
+}
+
+#:run
+if [[ "$1" == "help" ]]; then { head; help; end; exit; }; fi
+echo "Initializing..."
+#setlocal EnableExtensions
+#setlocal EnableDelayedExpansion
+edensh_inp=NUL
+edensh_out=NUL
+TTT_temp[0]=NUL
+TTT_temp[1]=NUL
+TTT_cell[1]=-
+TTT_cell[2]=-
+TTT_cell[3]=-
+TTT_cell[4]=-
+TTT_cell[5]=-
+TTT_cell[6]=-
+TTT_cell[7]=-
+TTT_cell[8]=-
+TTT_cell[9]=-
+TTT_inputs=0
+if (( $RANDOM < 16384 )); then TTT_status=O; else TTT_status=X; fi
+echo
+head
+echo "Tic-Tac-Toe is 2-player game. Each player take turns marking a 3 x 3 grid."
+echo "The first player that succeeds in placing 3 adjacent marks wins."
+echo
+echo "Cell reference:"
+echo
+echo "  1 2 3"
+echo "  4 5 6"
+echo "  7 8 9"
+echo
+echo "[ctrl+c] anytime to abort. Press any key to proceed."
+read -n 1
+game

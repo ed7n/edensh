@@ -1,0 +1,18 @@
+#! /bin/bash
+
+echo
+echo
+echo "Welcome again $USERNAME!"
+echo "-------------------------------AVAILABLE SCRIPTS-------------------------------"
+echo "adminchk  autocln  autogrub  automen  autoupd  calc  help  maccln  repeat"
+echo "setupchk  TiTaTo"
+echo "-------------------------------------------------------------------------------"
+echo
+echo "Input your desired script(s) with the \"./\" prefix. Multiple scripts can be"
+echo "separated with a semicolon (;). For example, \"./autocln ; ./repeat\"."
+echo
+echo "Input \"./help\" for more information, For help on a specific script, append"
+echo "\" help\" to its name. For example, \"./autocln help\"."
+echo
+echo "Input \"exit\" to quit."
+echo

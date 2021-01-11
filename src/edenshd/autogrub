@@ -1,0 +1,44 @@
+#! /bin/bash
+
+echo
+echo
+
+head() {
+    echo "Automated GRUB Operations (autogrub)"
+    echo "------------------------------------"
+    echo "u3r3 by Brendon, 01/23/2019."
+    echo
+    echo "Updates and installs the GRand Unified Bootloader (GRUB) into"
+    echo "\"/dev/sda\"."
+    echo
+    echo "Designed for Debian 9."
+    echo
+    echo
+}
+
+help() {
+    echo "Help is unavailable for this script."
+}
+
+end() {
+    echo
+    echo
+    echo "---------------"
+    echo "End of autogrub"
+}
+
+if [[ "$1" == "help" ]]; then { head; help; end; exit; }; fi
+echo "Initializing..."
+./adminchk || { echo "Adminchk failed. Abort..."; exit; }
+echo
+head
+echo "[ctrl+c] anytime to abort. Press any key to proceed."
+read -n 1 -s -t 5
+echo
+echo
+echo "<autogrub/i> Performing update..."
+sudo update-grub
+echo
+echo "<autogrub/i> Performing installation..."
+sudo grub-install dev/sda
+end

@@ -1,0 +1,52 @@
+#! /bin/bash
+
+echo
+echo
+#goto run
+
+head() {
+    echo "Automen Setup Checker (setupchk)"
+    echo "--------------------------------"
+    echo "u1r3 by Brendon, 01/23/2019."
+    echo
+    echo "Checks the presence of optional third-party programs."
+    echo
+    echo
+}
+
+help() {
+    echo "Help is unavailable for this script."
+}
+
+end() {
+    echo
+    echo
+}
+
+#:run
+if [[ "$1" == "help" ]]; then { head; help; end; exit; }; fi
+edenshd="$PWD"
+echo "<setupchk/i> Checking automen setup..."
+
+# apt-get
+if type apt-get &> /dev/null; then
+    echo "<setupchk/i> ...found apt-get..."
+else
+    echo "<setupchk/X> ...missing apt-get..."
+fi
+
+# bleachbit
+if type bleachbit &> /dev/null; then
+    echo "<setupchk/i> ...found BleachBit..."
+else
+    echo "<setupchk/X> ...missing BleachBit..."
+fi
+
+# e4defrag
+if type e4defrag &> /dev/null; then
+    echo "<setupchk/i> ...found e4defrag..."
+else
+    echo "<setupchk/X> ...missing e4defrag..."
+fi
+echo "<setupchk/i> ...done"
+end

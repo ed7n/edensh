@@ -1,0 +1,51 @@
+#! /bin/bash
+
+echo
+echo
+echo "Initializing..."
+if ! [[ -e ./edenshd ]]; then echo "Missing ./edenshd. Abort..." & exit; fi
+if (( ${BASH_VERSION:0:1} < 4 )); then echo "Shell unsupported. Abort..." & exit; fi
+#del extcheck.log
+#setlocal EnableExtensions
+#setlocal EnableDelayedExpansion
+cd "./edenshd"
+edenshd="$PWD"
+echo
+echo "------------------------------<!> GENERAL WARNING------------------------------"
+echo
+echo "Any \"input\" instructions displayed on screen implies typing the characters"
+echo "inside the double quotes and pressing the [enter] key."
+echo
+echo "EDENsh and its scripts come with no warranty."
+echo
+echo "-------------------------------------------------------------------------------"
+echo "Press any key to proceed."
+read -n 1 -s
+echo
+echo
+echo "EDEN's SH Portal (edensh)"
+echo "-------------------------"
+echo "u3r0 by Brendon, 01/23/2019."
+echo
+echo
+echo "Welcome $USERNAME!"
+echo "-------------------------------AVAILABLE SCRIPTS-------------------------------"
+echo "adminchk  autocln  autogrub  automen  autoupd  calc  help  maccln  repeat"
+echo "setupchk  TiTaTo"
+echo "-------------------------------------------------------------------------------"
+echo
+echo "Input your desired script(s) with the \"./\" prefix. Multiple scripts can be"
+echo "separated with a semicolon (;). For example, \"./autocln ; ./repeat\"."
+echo
+echo "Input \"./help\" for more information, For help on a specific script, append"
+echo "\" help\" to its name. For example, \"./autocln help\"."
+echo
+echo "Input \"exit\" to quit."
+echo
+bash
+cd ./..
+#endlocal
+echo
+echo
+echo "-------------"
+echo "End of edensh"

@@ -1,0 +1,121 @@
+#! /bin/bash
+
+echo
+echo
+#goto run
+
+head() {
+    echo "Linux Automated Cleanup (autocln)"
+    echo "---------------------------------"
+    echo "u6r4 by Brendon, 01/23/2019."
+    echo
+    echo "Automatically cleans your system."
+    echo
+    echo "Designed for Debian 9."
+    echo
+    echo
+}
+
+help() {
+    echo "Usage: ./autocln <option>"
+    echo
+    echo "where <option> can be any of the following:"
+    echo
+    echo "  shutdown    Shuts down system after maintenance"
+    echo "  restart     Restarts system after maintenance"
+    echo "  logout      Logs you out of shell after maintenance"
+    #echo   reexplore    Restarts Windows Explorer after maintenance
+    #echo:
+    #echo   forceadmin   Bypasses adminchk, for use with Safe Mode only
+}
+
+end() {
+    echo
+    echo
+    echo "--------------"
+    echo "End of autocln"
+}
+
+#:run
+if [[ "$1" == "help" ]]; then { head; help; end; exit; }; fi
+echo "Initializing..."
+
+#if /i not "%1" == "forceadmin" (
+./adminchk || { echo "Adminchk failed. Abort..."; exit; }
+#) else (
+#    echo:
+#    echo adminchk bypassed, script may not run properly
+#    shift
+#)
+#setlocal EnableExtensions
+#setlocal EnableDelayedExpansion
+edensh_out=
+
+if [[ "$1" == "shutdown" ]]; then
+    edensh_out="sudo shutdown -P now > /dev/null"
+    echo
+    echo "Will shutdown after maintenance"
+fi
+if [[ "$1" == "restart" ]]; then
+    edensh_out="sudo shutdown -r now > /dev/null"
+    echo
+    echo "Will restart after maintenance"
+fi
+if [[ "$1" == "logout" ]]; then
+    edensh_out="logout"
+    echo:
+    echo "Will log out of shell after maintenance"
+fi
+#if /i "%1" == "reexplore" (
+    #set "edendos_out=( taskkill /f /im explorer.exe & explorer ) > nul 2>&1"
+    #echo:
+    #echo Will restart Explorer after maintenance
+#)
+edenshd="$PWD"
+#set autocln_s=start /wait
+#set autocln_sb=start /b /wait
+echo
+head
+echo "[ctrl+c] anytime to abort. Press any key to proceed."
+read -n 1 -s -t 5
+echo
+echo
+echo "<autocln/!> Begin system maintenance"
+echo
+
+# apt-get
+if ! type apt-get &> /dev/null; then
+    echo "<autocln/X> Missing apt-get!"
+else
+    echo "<autocln/i> Removing unused packages...(1/6)"
+    sudo apt-get autoremove -y &> /dev/null
+    echo
+    echo "<autocln/i> Clearing package download cache...(2/6)"
+    sudo apt-get clean -y &> /dev/null
+fi
+echo
+
+# bleachbit
+if ! type bleachbit &> /dev/null; then
+    echo "<autocln/X> Missing BleachBit!"
+else
+    echo "<autocln/i> Running BleachBit...(3/6)"
+    bleachbit -c --preset &> /dev/null
+    echo
+    echo "<autocln/i> Running BleachBit as root...(4/6)"
+    sudo bleachbit -c --preset &> /dev/null
+fi
+echo
+echo "<autocln/i> Clearing cache files...(5/6)"
+    sudo rm -fr $HOME/.cache/* &> /dev/null
+    sudo rm -fr /root/.cache/* &> /dev/null
+echo
+echo "<autocln/i> Clearing trashes...(6/6)"
+    sudo rm -fr $HOME/.local/share/Trash/* &> /dev/null
+    sudo rm -fr /root/.local/share/Trash/* &> /dev/null
+echo
+echo "<autocln/i> End system maintenance"
+cd $edenshd
+$edensh_out
+#endlocal
+end

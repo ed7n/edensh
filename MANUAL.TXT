@@ -1,0 +1,71 @@
+EDEN's SH Portal: Manual (MANUAL.TXT)
+-------------------------------------
+u3r0 by Brendon, 01/23/2019.
+
+Welcome to EDENsh update 3!
+
+
+Installation
+------------
+1.  Extract EDENsh <version>.zip into a folder of your desire.
+
+2.  Run the following commands in a terminal window:
+
+    cd <folder in which EDENsh was extracted>
+    chmod +x ./edensh ; chmod -R +x ./edenshd
+
+This allows the scripts to be executable.
+
+
+Getting Started
+---------------
+Start by running edensh and read the general warning that follows.
+
+You will be shown a list of scripts available for use, then be brought to the
+EDENsh prompt.
+
+Read the on-screen instructions.
+
+Some scripts require administrative privileges to proceed. If you wish to run
+them, ensure that you have such permissions and sudo. You will be prompted for
+your password before running these scripts. You can also check whether you
+meet these conditions with "./adminchk" at the EDENsh prompt.
+
+EDENsh works on a computer running (almost) any Debian-based Linux
+distribution, especially Ubuntu, where EDENsh was tested.
+
+Running EDENsh on a computer running anything other than Debian--or
+Debian-based--should be fine with some exceptions, so long as Bash is installed.
+This also applies to Cygwin.
+
+
+Optional First-Time Setup
+-------------------------
+automen and autocln optionally use the following third-party program:
+
+    BleachBit
+
+1.  If you have not done so, download and install it now using the following
+    command:
+
+    sudo apt-get install bleachbit
+
+The setupchk script can verify this for you, run this under EDENsh.
+
+
+2.  You will then need to configure it in the following manner:
+
+BleachBit and BleachBit (as root):
+
+    Check all cleaners except for "Free disk space", ignore all warnings.
+
+
+Endnote
+-------
+Linux is a trademark of Linus Torvalds.
+Ubuntu is a trademark of Canonical Ltd.
+macOS, formerly OS X is a trademark of Apple Inc.
+
+
+-----------------
+End of MANUAL.TXT

@@ -1,0 +1,48 @@
+#! /bin/bash
+
+echo
+echo
+
+head() {
+    echo "APT Automated Updater (autoupd)"
+    echo "-------------------------------"
+    echo "u2r3 by Brendon, 01/23/2019."
+    echo
+    echo "Automatically updates your system using the APT package manager."
+    echo "This requires connection to the internet. Data charges apply."
+    echo "APT output will be redirected to ../autoupd.out"
+    echo
+    echo "Designed for Debian 9."
+    echo
+    echo
+}
+
+help() {
+    echo "Help is unavailable for this script."
+}
+
+end() {
+    echo
+    echo
+    echo "--------------"
+    echo "End of autoupd"
+}
+
+if [[ "$1" == "help" ]]; then { head; help; end; exit; }; fi
+echo "Initializing..."
+./adminchk || { echo "Adminchk failed. Abort..."; exit; }
+type apt-get &> /dev/null || { echo "Missing apt-get. Abort..."; exit; }
+echo
+head
+echo "[ctrl+c] anytime to abort. Press any key to proceed."
+read -n 1 -s -t 5
+date &> ../autoupd.out
+echo
+echo
+echo "<autoupd/i> Reloading package list..."
+sudo apt-get update &>> ../autoupd.out
+echo
+echo "<autoupd/i> Updating installed packages..."
+# ack: https://stackoverflow.com/a/40751712
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade &>> ../autoupd.out
+end

@@ -1,0 +1,46 @@
+#! /bin/bash
+
+echo
+echo
+#goto run
+
+head() {
+    echo "Administrator Access Checker (adminchk)"
+    echo "---------------------------------------"
+    echo "u2r0 by Brendon, 01/23/2019."
+    echo
+    echo "Checks the presence of administrative permissions and prompts for the"
+    echo "administrator password if absent."
+    echo
+    echo
+}
+
+help() {
+    echo "Help is unavailable for this script."
+}
+
+end() {
+    echo
+    echo
+}
+
+#:run
+if [[ "$1" == "help" ]]; then { head; help; end; exit; }; fi
+echo "<adminchk/i> Checking superuser access..."
+
+if ! type sudo > /dev/null 2>&1; then
+    echo "<adminchk/X> ...missing sudo!"
+    end
+    exit 1
+fi
+sudo -Sv -p "<adminchk/?> Input password for %u: " --
+edensh_err=$?
+
+if (( $edensh_err != 0 )) ; then
+    echo "<adminchk/X> ...absent (exit status $edensh_err)"
+    end
+    exit 1;
+fi
+echo "<adminchk/i> ...present"
+end
+exit 0

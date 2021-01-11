@@ -1,0 +1,113 @@
+#! /bin/bash
+
+echo
+echo
+#goto run
+
+head() {
+    echo "macOS Junk Cleaner (maccln)"
+    echo "---------------------------"
+    echo "u5r3 by Brendon, 01/23/2019."
+    echo
+    echo "Designed for Debian 9."
+    echo
+    echo "This script deletes the following:"
+    echo
+    echo "  .fseventsd/  .Spotlight-V100/  .Trashes/  .DS_Store  ._*"
+    echo
+    echo "These are junk files and folders created in directories of any removable"
+    echo "disk inserted into a macOS computer."
+    echo
+    echo "macOS, formerly OS X, is a registered trademark of Apple Inc."
+    echo
+    echo
+}
+
+help() {
+    echo "Usage: ./maccln <root>"
+    echo
+    echo "where <root> is the root directory from which cleanup is to be executed."
+    echo
+    echo "Otherwise, this script is interactive."
+}
+
+end() {
+    echo
+    echo
+    echo "-------------"
+    echo "End of maccln"
+}
+
+cleanup() {
+    echo
+    echo "<maccln/i> Begin macOS junk cleanup"
+    cd $edensh_inp
+
+    if ! [[ -e .fseventsd ]]; then
+        echo "<maccln/X> Missing .fseventsd/"
+    else
+        rm -fr .fseventsd &> /dev/null
+        echo "<maccln/i> Deleted .fseventsd/"
+    fi
+    if ! [[ -e .Spotlight-V100 ]]; then
+        echo "<maccln/X> Missing .Spotlight-V100/"
+    else
+        rm -fr .Spotlight-V100 &> /dev/null
+        echo "<maccln/i> Deleted .Spotlight-V100/"
+    fi
+    if ! [[ -e .Trashes ]]; then
+        echo "<maccln/X> Missing .Trashes/"
+    else
+        rm -fr .Trashes &> /dev/null
+        echo "<maccln/i> Deleted .Trashes/"
+    fi
+    echo "<maccln/i> Deleting all found .DS_Store..."
+    rm -fr $( find -name .DS_Store ) &> /dev/null
+    echo "<maccln/i> Deleting all found ._*..."
+    rm -fr $( find -name ._* ) &> /dev/null
+    echo "<maccln/i> End macOS junk cleanup"
+    cd $edenshd
+}
+
+#:run
+if [[ "$1" == "help" ]]; then { head; help; end; exit; }; fi
+echo "Initializing..."
+#setlocal EnableExtensions
+#setlocal EnableDelayedExpansion
+edenshd="$PWD"
+edensh_inp=NUL
+
+if ! [[ "$@" == "" ]]; then
+    edensh_inp=$@
+    echo
+    echo "Will automatically clean $edensh_inp"
+fi
+echo
+head
+echo "[ctrl+c] anytime to abort."
+
+if ! [[ "$@" == "" ]]; then
+    echo
+
+    if ! [[ -e $edensh_inp ]]; then
+        echo "<maccln/X> $edensh_inp does not exist!"
+    else
+        cleanup
+    fi
+    #endlocal
+    end; exit
+fi
+while true; do
+    echo
+    echo "<maccln/?> Input root directory, \"quit\" to quit."
+    read -e -p "<maccln/_> " edensh_inp
+    if [[ "$edensh_inp" == "quit" ]]; then { end; break; }; fi
+
+    if ! [[ -e $edensh_inp ]]; then
+        echo "<maccln/X> $edensh_inp does not exist!"
+    else
+        cleanup
+        end
+        break
+    fi
+done
